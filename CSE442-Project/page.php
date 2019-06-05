@@ -2,10 +2,10 @@
 <html>
 <body>
 <?php
-echo "test email<br>";
+
 
 $email = $_POST["address"]; //takes the email given to the server via HTTP POST request
-
+echo "A confirmation has been sent to $email<br>";
 /* Below example taken from
 *https://www.w3schools.com/php/filter_validate_email.asp
 */
