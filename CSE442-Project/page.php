@@ -5,7 +5,7 @@
 
 
 $email = $_POST["address"]; //takes the email given to the server via HTTP POST request
-echo "A confirmation has been sent to $email<br>";
+
 /* Below example taken from
 *https://www.w3schools.com/php/filter_validate_email.asp
 */
@@ -17,7 +17,7 @@ $random_code = mt_rand(100000, 999999); // Example from https://www.expertsphp.c
 
 // Validate e-mail
 if (filter_var($email, FILTER_VALIDATE_EMAIL)) {
-    echo("$email is a valid email address");
+    echo ("A confirmation code has been sent to $email<br>");
 } else {
     echo("$email is not a valid email address");
 }
