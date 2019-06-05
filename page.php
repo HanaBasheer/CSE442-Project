@@ -23,5 +23,7 @@ if (filter_var($email, FILTER_VALIDATE_EMAIL)) {
 }
 mail($email, "Confirmation", "Your Confirmation code is : $random_code");//calls mail() function to send along to the given email --Zack
 	?>
+Please type your code here: <input type="text" name="code"><br>
+<input type="submit" value="Validate">
 </body>
 </html>
