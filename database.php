@@ -21,8 +21,9 @@ function storeCode(&$code, &$email){
 		echo "Connected to " . $GLOBALS['database'] . " successfully!\n";
 	}*/
 	
-	$insert = "INSERT IGNORE INTO Codes (code, email) VALUES ('" . $code . "', '" . $email . "');";
-	echo $insert;
+	$timestamp = date("Y-m-d H:i:s");
+	$insert = "INSERT IGNORE INTO Codes (code, email, tstamp) VALUES ('" . $code . "', '" . $email . "', '" . $timestamp . "');";
+	//echo $insert;
 	if (!$result = $mainDB->query($insert)){
 		echo "Something went wrong with inserting";
 		$mainDB->close();
@@ -42,6 +43,7 @@ function checkEmail(&$email){
 		$mainDB->close();
 		return FALSE;
 	}
+	$mainDB->close();
 	return "checkEmail reads $email";
 }
 //Checks that a code is in the table that stores codes and that that code has been submitted within 15minutes of generation
@@ -53,7 +55,10 @@ function checkCode(&$code){
 		$mainDB->close();
 		return FALSE;
 	}
-	$find = "SELECT email FROM Codes WHERE Codes.code = $code";
+
+	$timestamp = date("Y-m-d H:i:s");
+	$find = "SELECT email FROM Codes WHERE code='$code' and TIMESTAMPDIFF(MINUTE, tstamp, '$timestamp')<15";
+
 	if (!$result = $mainDB->query($find)){
 		echo "Something went wrong with finding emails";
 		$mainDB->close();
@@ -63,16 +68,22 @@ function checkCode(&$code){
 		echo "This is not a valid code";
 		$mainDB->close();
 		return FALSE;
+	}else{
+		$email = $result->fetch_assoc();
+		echo "The email matching this code is " . $email['email'];
+		
+
+		$mainDB->close();
+		return $email;	
 	}
-	$email = $result->fetch_assoc();
-	echo "The email matching this code is " . $email['email'];
-	$mainDB->close();
-	return $email;
+	
 }
 /*
 $testemail = "mickledickle@buffalo.eddy";
 $testcode = 1234;
+$falsecode = 2352435;
 storeCode($testcode, $testemail);
 checkCode($testcode);
+checkCode($falsecode);
 */
 ?>
