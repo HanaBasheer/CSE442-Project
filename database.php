@@ -14,7 +14,7 @@ function storeCode(&$code, &$email){
 	$mainDB = new mysqli($GLOBALS["server"],$GLOBALS["user"],$GLOBALS["password"],$GLOBALS["database"]);
 	
 	if ($mainDB->connect_error){
-		echo "Error: " . $mainDB->connect_error . "\n";
+		echo "Error with storeCode: " . $mainDB->connect_error . "\n";
 		$mainDB->close();
 		return FALSE;
 	}/*else{
@@ -36,6 +36,12 @@ function storeCode(&$code, &$email){
 }
 //Checks that an email is in the table that stores all students in the class
 function checkEmail(&$email){
+	$mainDB = new mysqli($GLOBALS["server"],$GLOBALS["user"],$GLOBALS["password"],$GLOBALS["database"]);
+	if ($mainDB->connect_error){
+		echo "Error with checkingEmail: " . $mainDB->connect_error . "\n";
+		$mainDB->close();
+		return FALSE;
+	}
 	return "checkEmail reads $email";
 }
 //Checks that a code is in the table that stores codes and that that code has been submitted within 15minutes of generation
@@ -43,7 +49,7 @@ function checkCode(&$code){
 	$mainDB = new mysqli($GLOBALS["server"],$GLOBALS["user"],$GLOBALS["password"],$GLOBALS["database"]);
 
 	if ($mainDB->connect_error){
-		echo "Error: " . $mainDB->connect_error . "\n";
+		echo "Error with checkCode: " . $mainDB->connect_error . "\n";
 		$mainDB->close();
 		return FALSE;
 	}
@@ -55,10 +61,12 @@ function checkCode(&$code){
 	}
 	if ($result->num_rows === 0){
 		echo "This is not a valid code";
+		$mainDB->close();
 		return FALSE;
 	}
 	$email = $result->fetch_assoc();
 	echo "The email matching this code is " . $email['email'];
+	$mainDB->close();
 	return $email;
 }
 /*
