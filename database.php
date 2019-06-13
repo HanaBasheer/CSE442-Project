@@ -55,7 +55,7 @@ function checkCode(&$code){
 	}
 	$email = $result->fetch_assoc();
 	echo "The email matching this code is " . $email['email'];
-	return TRUE;
+	return $email;
 }
 /*
 $testemail = "mickledickle@buffalo.eddy";
