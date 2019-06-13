@@ -65,16 +65,15 @@ function checkCode(&$code){
 		return FALSE;
 	}
 	if ($result->num_rows === 0){
-		echo "This is not a valid code";
+		echo '<div style="font-size:1.25em;">Please enter a valid code...<br> </div>';
+		#echo $code;
 		$mainDB->close();
 		return FALSE;
 	}else{
 		$email = $result->fetch_assoc();
 		echo "The email matching this code is " . $email['email'];
-		
-
 		$mainDB->close();
-		return $email;	
+		return TRUE;	//should change back to $email return 
 	}
 	
 }
