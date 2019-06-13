@@ -8,35 +8,71 @@ $password = "50150490";
 $database = "cse442_542_2019_summer_teamc_db";
 
 
-//Stores a generated code with a paired email to an appropriate table on the class database
+//Stores a generated code with a paired email to an appropriate table on the class database, will not add duplicate codes
 function storeCode(&$code, &$email){
 	//connect to database
 	$mainDB = new mysqli($GLOBALS["server"],$GLOBALS["user"],$GLOBALS["password"],$GLOBALS["database"]);
 	
 	if ($mainDB->connect_error){
-		echo "Error: " . $mainDB->connect_error . "\n";
-		exit;
-	}else{
-		echo "Connected to $database successfully!";
-	}
-	/*
-	$insert = "INSERT INTO `$database`.`Codes` (`code`, `email`) VALUES ('$code', '$email');";
+		echo "Error with storeCode: " . $mainDB->connect_error . "\n";
+		$mainDB->close();
+		return FALSE;
+	}/*else{
+		echo "Connected to " . $GLOBALS['database'] . " successfully!\n";
+	}*/
+	
+	$insert = "INSERT IGNORE INTO Codes (code, email) VALUES ('" . $code . "', '" . $email . "');";
 	echo $insert;
+	if (!$result = $mainDB->query($insert)){
+		echo "Something went wrong with inserting";
+		$mainDB->close();
+		return FALSE;
+	}/*else{
+		echo "yay";
+	}*/
+	$mainDB->close();
+	return TRUE;
 
-*/
 }
 //Checks that an email is in the table that stores all students in the class
 function checkEmail(&$email){
-	return "checkEmail works with $email";
+	$mainDB = new mysqli($GLOBALS["server"],$GLOBALS["user"],$GLOBALS["password"],$GLOBALS["database"]);
+	if ($mainDB->connect_error){
+		echo "Error with checkingEmail: " . $mainDB->connect_error . "\n";
+		$mainDB->close();
+		return FALSE;
+	}
+	return "checkEmail reads $email";
 }
 //Checks that a code is in the table that stores codes and that that code has been submitted within 15minutes of generation
 function checkCode(&$code){
+	$mainDB = new mysqli($GLOBALS["server"],$GLOBALS["user"],$GLOBALS["password"],$GLOBALS["database"]);
 
-	return "checkCode works with $code";
+	if ($mainDB->connect_error){
+		echo "Error with checkCode: " . $mainDB->connect_error . "\n";
+		$mainDB->close();
+		return FALSE;
+	}
+	$find = "SELECT email FROM Codes WHERE Codes.code = $code";
+	if (!$result = $mainDB->query($find)){
+		echo "Something went wrong with finding emails";
+		$mainDB->close();
+		return FALSE;
+	}
+	if ($result->num_rows === 0){
+		echo "This is not a valid code";
+		$mainDB->close();
+		return FALSE;
+	}
+	$email = $result->fetch_assoc();
+	echo "The email matching this code is " . $email['email'];
+	$mainDB->close();
+	return $email;
 }
-
+/*
 $testemail = "mickledickle@buffalo.eddy";
 $testcode = 1234;
 storeCode($testcode, $testemail);
-
+checkCode($testcode);
+*/
 ?>
