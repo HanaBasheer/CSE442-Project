@@ -1,5 +1,10 @@
 <!DOCTYPE html>
 <html>
+
+<head>
+  <link rel="stylesheet" href="css/emailStyle.css">
+</head>
+
 <body>
 <?php
 
