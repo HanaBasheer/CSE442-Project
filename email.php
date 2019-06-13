@@ -3,6 +3,7 @@
 <body>
 <?php
 
+include("database.php")
 
 $email = $_POST["address"]; //takes the email given to the server via HTTP POST request
 
@@ -25,5 +26,23 @@ mail($email, "Confirmation", "Your Confirmation code is : $random_code");//calls
 	?>
 Please type your code here: <input type="text" name="code"><br>
 <button type="button">Validate</button>
+
+<?php
+
+if(!empty($_POST["code"])) {
+  $code_entered = $_POST["code"];
+}
+
+$function_result = checkCode($code_entered);
+
+if(checkCode($code_entered) != false) {
+   header("Location: evalForm.php");
+}
+else {
+   header("Location: index.html");
+}
+
+?>
+
 </body>
 </html>
