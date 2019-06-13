@@ -53,6 +53,10 @@ function checkCode(&$code){
 		$mainDB->close();
 		return FALSE;
 	}
+	if ($result->num_rows === 0){
+		echo "This is not a valid code";
+		return FALSE;
+	}
 	$email = $result->fetch_assoc();
 	echo "The email matching this code is " . $email['email'];
 	return $email;
