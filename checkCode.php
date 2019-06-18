@@ -15,12 +15,11 @@ if(!empty($_POST["code"])) {
 
 
 if(checkCode($code) == 1) {
-   #header("Location: evalForm.php");
-   header("refresh:1; url=evalForm.php");
+   header("refresh:0; url=evalForm.html"); // modified
 }
 
 else {
-   header("refresh:1; url=email.php");
+   header("refresh:0; url=invalidCode.html");
 }
 
 ?>
