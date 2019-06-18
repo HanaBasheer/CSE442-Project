@@ -22,8 +22,8 @@ function storeCode(&$code, &$email){
 	}*/
 	
 	$timestamp = date("Y-m-d H:i:s");
-	$insert = "INSERT IGNORE INTO Codes (code, email, tstamp) VALUES ('" . $code . "', '" . $email . "', '" . $timestamp . "');";
-	//echo $insert;
+	$insert = $mainDB->prepare("INSERT IGNORE INTO Codes (code, email, tstamp) VALUES (?, ?, ?)");
+	$insert->bind_param("sss", "$code", $email, $timestamp);
 	if (!$result = $mainDB->query($insert)){
 		echo "Something went wrong with inserting";
 		$mainDB->close();
@@ -57,9 +57,10 @@ function checkCode(&$code){
 	}
 
 	$timestamp = date("Y-m-d H:i:s");
-	$find = "SELECT email FROM Codes WHERE code='$code' and TIMESTAMPDIFF(MINUTE, tstamp, '$timestamp')<15";
+	$find = $mainDB->prepare("SELECT email FROM Codes WHERE code = ? and TIMESTAMPDIFF(MINUTE, tstamp, ?)<15");
+	$find->bind_param("ss", "$code", $timestamp);
 
-	if (!$result = $mainDB->query($find)){
+	if (!$result = $find->execute()){
 		echo "Something went wrong with finding emails";
 		$mainDB->close();
 		return FALSE;
@@ -71,18 +72,18 @@ function checkCode(&$code){
 		return FALSE;
 	}else{
 		$email = $result->fetch_assoc();
-		echo "The email matching this code is " . $email['email'];
+		//echo "The email matching this code is " . $email['email'];
 		$mainDB->close();
 		return TRUE;	//should change back to $email return 
 	}
 	
 }
-/*
-$testemail = "mickledickle@buffalo.eddy";
+
+$testemail = "orionpal@buffalo.edu";
 $testcode = 1234;
-$falsecode = 2352435;
+$falsecode = 4321;
 storeCode($testcode, $testemail);
 checkCode($testcode);
 checkCode($falsecode);
-*/
+
 ?>
