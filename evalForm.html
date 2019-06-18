@@ -2,12 +2,21 @@
 
 <head>
   <link rel="stylesheet" href="evalForm.css">
+
+  <script type="text/javascript">
+
+  function submitSuccessMsg() {
+    alert("Your form has been submitted successfully.")
+  }
+
+  </script>
+
 </head>
 
 <body>
 
 <table>
-  <thead>
+  <thead class="header">
 
     <tr> <!-- Headers -->
       <td>CATEGORY</td>
@@ -24,7 +33,7 @@
       <td>
         <p>Does not willingly assume <br> team roles;</p>
         <p>Rarely completes assigned work</p>
-        <input type="radio" id="r1-zero" name="r1" value="r1-c2">
+        <input type="radio" id="r1-zero" name="r1" value="r1-zero">
       </td>
       <td>
         <p>Usually accepts assigned <br> team roles;</p>
@@ -149,6 +158,9 @@
 
 </table>
 
+<form onsubmit="JavaScript:submitSuccessMsg()">
+  <input type="submit" name="" value="Submit">
+</form>
+
 </body>
 </html>
-
