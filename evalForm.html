@@ -4,31 +4,35 @@
   <link rel="stylesheet" href="evalForm.css">
 
   <script type="text/javascript">
-
-  function submitSuccessMsg() {
-    alert("Your form has been submitted successfully.")
-  }
-
+    function submitSuccessMsg() {
+      alert("Your form has been submitted successfully.")
+    }
   </script>
 
 </head>
 
 <body>
 
-<table>
-  <thead class="header">
+  <h2>Peer Evaluation Form</h2>
 
-    <tr> <!-- Headers -->
-      <td>CATEGORY</td>
-      <td>0 Points (Unsatisfactory)</td>
-      <td>1 Point (Developing)</td>
-      <td>2 Points (Satisfactory)</td>
-      <td>3 Points (Exemplary)</td>
-    </tr>
+  <p>Select your teammate: <input type="radio" name="teammates" value="t1"> Teammate 1 <input type="radio" name="teammates" value="t2"> Teammate 2 </p>
 
-  </thead>
+  <table>
+    <thead class="header">
 
-    <tr> <!-- 1st Row - Role -->
+      <tr>
+        <!-- Headers -->
+        <td>CATEGORY</td>
+        <td>Unsatisfactory</td>
+        <td>Developing</td>
+        <td>Satisfactory</td>
+        <td>Exemplary</td>
+      </tr>
+
+    </thead>
+
+    <tr id="row-1">
+      <!-- 1st Row - Role -->
       <td>ROLE</td>
       <td>
         <p>Does not willingly assume <br> team roles;</p>
@@ -38,21 +42,22 @@
       <td>
         <p>Usually accepts assigned <br> team roles;</p>
         <p>Occasionally completes assigned work</p>
-        <input type="radio" id="r1-c3" name="r1" value="r1-c3">
+        <input type="radio" id="r1-one" name="r1" value="r1-one">
       </td>
       <td>
         <p>Accepts assigned team <br> roles;</p>
         <p>Mostly completes assigned work</p>
-        <input type="radio" id="r1-c4" name="r1" value="r1-c4">
+        <input type="radio" id="r1-two" name="r1" value="r1-two">
       </td>
       <td>
         <p>Accepts all assigned team <br> roles;</p>
         <p>Always completes assigned work</p>
-        <input type="radio" id="r1-c5" name="r1" value="r1-c5">
+        <input type="radio" id="r1-three" name="r1" value="r1-three">
       </td>
     </tr>
 
-    <tr> <!-- 2nd Row - Leadership -->
+    <tr id="row-2">
+      <!-- 2nd Row - Leadership -->
       <td>LEADERSHIP</td>
       <td>
         <p>Rarely takes leadership <br>role; </p>
@@ -80,7 +85,8 @@
       </td>
     </tr>
 
-    <tr> <!-- 3rd Row - Participation -->
+    <tr id="row-3">
+      <!-- 3rd Row - Participation -->
       <td>PARTICIPATION</td>
       <td>
         <p>Often misses meetings; </p>
@@ -108,7 +114,8 @@
       </td>
     </tr>
 
-    <tr> <!-- 4th Row - Professionalism -->
+    <tr>
+      <!-- 4th Row - Professionalism -->
       <td>PROFESSIONALISM</td>
       <td>
         <p>Often discourteous and/or openly critical of teammates; </p>
@@ -132,7 +139,8 @@
       </td>
     </tr>
 
-    <tr> <!-- 5th row - Quality -->
+    <tr>
+      <!-- 5th row - Quality -->
       <td>QUALITY</td>
       <td>
         <p>Rarely commits to shared documents; </p>
@@ -156,11 +164,13 @@
       </td>
     </tr>
 
-</table>
+  </table>
 
-<form onsubmit="JavaScript:submitSuccessMsg()">
-  <input type="submit" name="" value="Submit">
-</form>
+  <form onsubmit="JavaScript:submitSuccessMsg()">
+    <br>
+    <input id="submit-btn" type="submit" name="" value="Submit"> <br>
+  </form>
 
 </body>
+
 </html>
