@@ -94,8 +94,27 @@ function storeFormData(&$email, &$peer, &$team, &$role, &$lead, &$par, &$prof, &
 		return FALSE;
 	}
 	//check if there is already form data, if there is then update
-	//$check = $mainDB->prepare("SELECT * FROM Forms WHERE Owner = ? AND Peer = ?");
-	//$check->bind_param("ss", $email, $peer)
+	$check = $mainDB->prepare("SELECT * FROM Forms WHERE Owner = ? AND Peer = ? AND Team = ?");
+	$check->bind_param("sss", $email, $peer, $team);
+
+	if (!$check->execute()){
+		echo "Something went wrong with checking form data";
+		$mainDB->close();
+		return FALSE;
+	}
+
+	$check->store_result();
+	//if something was found then update that row and return true
+	if ($check->num_rows != 0){
+		$update = $mainDB->prepare("UPDATE Forms SET Role = ?, Leadership = ?, Participation = ?, Professionalism = ?, Quality = ? WHERE Owner = ? AND Peer = ? AND Team = ?");
+		$update->bind_param("iiiiisss", $role, $lead, $par, $prof, $qual, $email, $peer, $team);
+		if (!$update->execute()){
+			echo "Something went wrong with updating form data";
+			$mainDB->close();
+			return FALSE;		
+		}
+		return TRUE;
+	}
 
 
 	//otherwise just store the new data
@@ -111,6 +130,10 @@ function storeFormData(&$email, &$peer, &$team, &$role, &$lead, &$par, &$prof, &
 	$mainDB->close();
 	return TRUE;
 }
+
+function getFormData(&$email, &$peer, &$team){
+	return FALSE;
+}
 //storeCode and checkCode tests
 /*
 $testemail = "orionpal@buffalo.edu";
@@ -121,7 +144,7 @@ checkCode($testcode);
 checkCode($falsecode);
 */
 //storeForm tests
-
+/*
 $testemail = "orionpal@buffalo.edu";
 $testpeer = "hanab@buffalo.edu";
 $testteam = "c";
@@ -131,5 +154,11 @@ $tpar = 3;
 $tprof = 3;
 $tqual = 3;
 storeFormData($testemail, $testpeer, $testteam, $trole, $tlead, $tpar, $tprof, $tqual);
-
+$trole = 2;
+$tlead = 2;
+$tpar = 2;
+$tprof = 2;
+$tqual = 2;
+storeFormData($testemail, $testpeer, $testteam, $trole, $tlead, $tpar, $tprof, $tqual);
+*/
 ?>
