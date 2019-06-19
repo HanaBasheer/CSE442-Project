@@ -3,9 +3,19 @@
 
 <head>
   <link rel="stylesheet" href="css/emailStyle.css">
+  <link href="https://fonts.googleapis.com/css?family=Noto+Serif+SC&display=swap" rel="stylesheet">
 </head>
 
 <body>
+
+  <div class="top-strip">
+
+    <img class="ub-logo" src="http://www.buffalo.edu/content/www/brand/identity/university-logo-and-marks/_jcr_content/par/image_10.img.447.auto.png/1460126233828.png" alt="UB-Logo">
+
+  </div>
+
+  <div class="code-sent">
+
 <?php
 
 include"database.php";
@@ -41,14 +51,19 @@ if(!empty($_POST["address"])) {
 
 
 	?>
-<form action ="checkCode.php" method = "post"> 
+  </div>
 
-Enter Code: <input type="text" name="code"><br>
-<input type = "submit" value = "Submit">
-</form>
+  <div class="enter-code">
+    <form action ="checkCode.php" method = "post"> 
+
+    Enter Code: <input type="text" name="code"><br>
+    <input type = "submit" value = "Submit">
+    </form>
 
 <br><br>
 <a href="index.html">Click here to return to email entry!</a>
+
+  </div>
 
 </body>
 </html>
