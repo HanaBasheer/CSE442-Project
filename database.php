@@ -10,6 +10,7 @@ $database = "cse442_542_2019_summer_teamc_db";
 
 //Stores a generated code with a paired email to an appropriate table on the class database, will not add duplicate codes
 function storeCode(&$code, &$email){
+	$strcode = "$code";
 	//connect to database
 	$mainDB = new mysqli($GLOBALS["server"],$GLOBALS["user"],$GLOBALS["password"],$GLOBALS["database"]);
 	
@@ -23,14 +24,15 @@ function storeCode(&$code, &$email){
 	
 	$timestamp = date("Y-m-d H:i:s");
 	$insert = $mainDB->prepare("INSERT IGNORE INTO Codes (code, email, tstamp) VALUES (?, ?, ?)");
-	$insert->bind_param("sss", "$code", $email, $timestamp);
-	if (!$result = $mainDB->query($insert)){
+	$insert->bind_param("sss", $strcode, $email, $timestamp);
+	
+	if (!$insert->execute()){
 		echo "Something went wrong with inserting";
 		$mainDB->close();
 		return FALSE;
-	}/*else{
-		echo "yay";
-	}*/
+	}else{
+		//echo "Successfully stored $code $email at $timestamp";
+	}
 	$mainDB->close();
 	return TRUE;
 
@@ -58,32 +60,35 @@ function checkCode(&$code){
 
 	$timestamp = date("Y-m-d H:i:s");
 	$find = $mainDB->prepare("SELECT email FROM Codes WHERE code = ? and TIMESTAMPDIFF(MINUTE, tstamp, ?)<15");
-	$find->bind_param("ss", "$code", $timestamp);
+	$find->bind_param("ss", $code, $timestamp);
 
-	if (!$result = $find->execute()){
+	if (!$find->execute()){
 		echo "Something went wrong with finding emails";
 		$mainDB->close();
 		return FALSE;
 	}
-	if ($result->num_rows === 0){
+
+	$find->store_result();
+
+	if ($find->num_rows == 0){
 		echo '<div style="font-size:1.25em;">Please enter a valid code...<br> </div>';
-		#echo $code;
 		$mainDB->close();
 		return FALSE;
 	}else{
-		$email = $result->fetch_assoc();
+		$find->bind_result($email);
+		$find->fetch();
 		//echo "The email matching this code is " . $email['email'];
 		$mainDB->close();
 		return TRUE;	//should change back to $email return 
 	}
 	
 }
-
+/*
 $testemail = "orionpal@buffalo.edu";
 $testcode = 1234;
 $falsecode = 4321;
 storeCode($testcode, $testemail);
 checkCode($testcode);
 checkCode($falsecode);
-
+*/
 ?>
