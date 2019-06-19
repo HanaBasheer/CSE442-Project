@@ -73,7 +73,7 @@ function checkCode(&$code){
 	
 }
 
-//Checks that an email is in the table that stores all students in the class
+//Checks that an email is in the table that stores all students in the class, returns false if no student
 function checkEmail(&$email){
 	$mainDB = new mysqli($GLOBALS["server"],$GLOBALS["user"],$GLOBALS["password"],$GLOBALS["database"]);
 	if ($mainDB->connect_error){
@@ -82,7 +82,44 @@ function checkEmail(&$email){
 		return FALSE;
 	}
 	$mainDB->close();
+
 	return "checkEmail reads $email";
+}
+
+//returns list of Teammate emails based on another email
+function getTeammates(&$email){
+	$mainDB = new mysqli($GLOBALS["server"],$GLOBALS["user"],$GLOBALS["password"],$GLOBALS["database"]);
+
+	if ($mainDB->connect_error){
+		echo "Error with checkCode: " . $mainDB->connect_error . "\n";
+		$mainDB->close();
+		return FALSE;
+	}
+	//find the team associated with this email
+	$getTeam = $mainDB->prepare("SELECT Team FROM Students WHERE Email = ?");
+	$getTeam->bind_param("s", $email);
+
+	if (!$getTeam->execute()){
+		echo "Something went wrong with checking form data";
+		$mainDB->close();
+		return FALSE;
+	}
+
+	$getTeam->store_result();
+
+	if ($getTeam->num_rows==0){
+		//this student is not part of a Team or isn't in the class
+		$mainDB->close();
+		return FALSE;
+	}else{
+		$getTeam->bind_result($team);
+		$getTeam->fetch();
+		echo "$team";
+		$mainDB->close();
+		return TRUE;
+	}
+
+	//$getMates = 
 }
 
 function storeFormData(&$email, &$peer, &$team, &$role, &$lead, &$par, &$prof, &$qual){	
@@ -113,6 +150,7 @@ function storeFormData(&$email, &$peer, &$team, &$role, &$lead, &$par, &$prof, &
 			$mainDB->close();
 			return FALSE;		
 		}
+		$mainDB->close();
 		return TRUE;
 	}
 
@@ -152,6 +190,7 @@ function getFormData(&$email, &$peer, &$team){
 	$get->store_result();
 
 	if ($get->num_rows==0){
+		$mainDB->close();
 		return FALSE;
 	}else{
 		$get->bind_result($o, $p, $t, $c1, $c2, $c3, $c4, $c5);
