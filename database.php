@@ -98,15 +98,12 @@ function getTeammates(&$email){
 	//find the team associated with this email
 	$getTeam = $mainDB->prepare("SELECT Team FROM Students WHERE Email = ?");
 	$getTeam->bind_param("s", $email);
-
 	if (!$getTeam->execute()){
-		echo "Something went wrong with checking form data";
+		echo "Something went wrong with getting team name";
 		$mainDB->close();
 		return FALSE;
 	}
-
 	$getTeam->store_result();
-
 	if ($getTeam->num_rows==0){
 		//this student is not part of a Team or isn't in the class
 		$mainDB->close();
@@ -114,14 +111,29 @@ function getTeammates(&$email){
 	}else{
 		$getTeam->bind_result($team);
 		$getTeam->fetch();
-		echo "$team";
-		$mainDB->close();
-		return TRUE;
+		//echo "$team";
 	}
+	$getTeam->free_result();
+	$getTeam->close();
 
-	//$getMates = 
+	//get teammates emails associated with previously found team
+	$getMates = $mainDB->prepare("SELECT Email FROM Students WHERE Team = ? and Email != ?");
+	$getMates->bind_param("ss", $team, $email);
+	if (!$getMates->execute()){
+		echo "Something went wrong with checking form data";
+		$mainDB->close();
+		return FALSE;
+	}
+	$getMates->store_result();
+	$getMates->bind_result($mate);
+	$results = array();
+	while ($getMates->fetch()){
+		array_push($results, $mate);
+	}
+	return $results;
 }
 
+//Storing Form Data
 function storeFormData(&$email, &$peer, &$team, &$role, &$lead, &$par, &$prof, &$qual){	
 	$mainDB = new mysqli($GLOBALS["server"],$GLOBALS["user"],$GLOBALS["password"],$GLOBALS["database"]);
 
@@ -153,7 +165,8 @@ function storeFormData(&$email, &$peer, &$team, &$role, &$lead, &$par, &$prof, &
 		$mainDB->close();
 		return TRUE;
 	}
-
+	$check->free_result();
+	$check->close();
 
 	//otherwise just store the new data
 	$store = $mainDB->prepare("INSERT INTO Forms (Owner, Peer, Team, Role, Leadership, Participation, Professionalism, Quality) VALUES (?, ?, ?, ?, ?, ?, ?, ?)");
