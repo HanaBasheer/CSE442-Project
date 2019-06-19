@@ -131,34 +131,35 @@ function storeFormData(&$email, &$peer, &$team, &$role, &$lead, &$par, &$prof, &
 	return TRUE;
 }
 
+//returns list of the score for each form category (with structure: [Role, Leadership, Participation, Professionalism, Quality])
 function getFormData(&$email, &$peer, &$team){
-	return FALSE;
+	$mainDB = new mysqli($GLOBALS["server"],$GLOBALS["user"],$GLOBALS["password"],$GLOBALS["database"]);
+
+	if ($mainDB->connect_error){
+		echo "Error with checkCode: " . $mainDB->connect_error . "\n";
+		$mainDB->close();
+		return FALSE;
+	}
+	$get = $mainDB->prepare("SELECT * FROM Forms WHERE Owner = ? AND Peer = ? AND Team = ?");
+	$get->bind_param("sss", $email, $peer, $team);
+
+	if (!$get->execute()){
+		echo "Something went wrong with getting form data";
+		$mainDB->close();
+		return FALSE;
+	}
+
+	$get->store_result();
+
+	if ($get->num_rows==0){
+		return FALSE;
+	}else{
+		$get->bind_result($o, $p, $t, $c1, $c2, $c3, $c4, $c5);
+		$get->fetch();
+		//echo "The results for $email and $peer of team $team are $c1  $c2  $c3  $c4  $c5";
+		$mainDB->close();
+		$result = array($c1, $c2, $c3, $c4, $c5);
+		return $result;	//should change back to $email return 
+	}
 }
-//storeCode and checkCode tests
-/*
-$testemail = "orionpal@buffalo.edu";
-$testcode = 1234;
-$falsecode = 4321;
-storeCode($testcode, $testemail);
-checkCode($testcode);
-checkCode($falsecode);
-*/
-//storeForm tests
-/*
-$testemail = "orionpal@buffalo.edu";
-$testpeer = "hanab@buffalo.edu";
-$testteam = "c";
-$trole = 3;
-$tlead = 3;
-$tpar = 3;
-$tprof = 3;
-$tqual = 3;
-storeFormData($testemail, $testpeer, $testteam, $trole, $tlead, $tpar, $tprof, $tqual);
-$trole = 2;
-$tlead = 2;
-$tpar = 2;
-$tprof = 2;
-$tqual = 2;
-storeFormData($testemail, $testpeer, $testteam, $trole, $tlead, $tpar, $tprof, $tqual);
-*/
 ?>
