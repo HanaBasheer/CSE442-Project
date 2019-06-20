@@ -1,0 +1,33 @@
+body {
+  background-color: #005bbb;
+  margin: 0;
+  color: #ffffff;
+  font-size: large;
+  font-weight: normal;
+  font-family: 'Noto Serif SC', serif;
+}
+
+.top-strip {
+  background-color: #ffffff;
+  height: 100px;
+  margin-bottom: 20%;
+}
+
+.ub-logo {
+  height: 100px;
+  position: relative;
+  right: 160px;
+}
+
+.code-sent {
+  text-align: center;
+}
+
+a {
+  color: #ffffff;
+}
+
+.enter-code {
+  text-align: center;
+}
+
