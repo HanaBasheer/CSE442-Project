@@ -16,12 +16,12 @@ $code=preg_replace('/\s+/', '', $code);
 #echo $return_function;
 
 
-if(checkCode($code) == 1) {
-   header("refresh:0; url=evalForm.html"); // modified
+if(checkCode($code) == 0) {
+   header("refresh:0; url=invalidCode.html");
 }
 
 else {
-   header("refresh:0; url=invalidCode.html");
+    header("refresh:0; url=evalForm.html"); // modified
 }
 
 ?>
