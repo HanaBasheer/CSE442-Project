@@ -21,7 +21,7 @@ if(checkCode($code) == 0) {
 }
 
 else {
-    header("refresh:0; url=evalForm.html"); // modified
+    header("refresh:0; url=evalForm.php"); // modified
 }
 
 ?>

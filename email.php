@@ -61,7 +61,7 @@ if(!empty($_POST["address"])) {
   </div>
 
   <div class="enter-code">
-    <form action ="checkCode.php" method = "post"> 
+    <form action ="actionBasedOnCode.php" method = "post"> 
 
     Enter Code: <input type="text" name="code"><br>
     <input type = "submit" value = "Submit">

@@ -67,7 +67,7 @@ function checkCode(&$code){
 		$find->fetch();
 		//echo "The email matching this code is " . $email['email'];
 		$mainDB->close();
-		return TRUE;	//should change back to $email return 
+		return $email;	//should change back to $email return 
 	}
 }
 //Checks that an email is in the table that stores all students in the class, returns false if no student

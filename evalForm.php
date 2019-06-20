@@ -7,7 +7,7 @@ $peers = getTeammates($email);
 <html>
 
 <head>
-  <link rel="stylesheet" href="evalForm.css">
+  <link rel="stylesheet" href="styles/evalForm.css">
 
   <script type="text/javascript">
     function submitSuccessMsg() {
