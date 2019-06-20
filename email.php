@@ -38,6 +38,10 @@ if(!empty($_POST["address"])) {
 	  echo '<div style="font-size:1.25em;color:red;">email is not a valid email address, try again...<br> </div>';
 	  header("refresh:1; url=index.html");
       }
+	  
+	  if (checkEmail($email) == 0){
+		header("refresh:1; url=invalidEmail.php");
+	}
     mail($email, "Confirmation", "Your Confirmation code is : $random_code");
 }
 
