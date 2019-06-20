@@ -71,9 +71,9 @@ function checkCode(&$code){
 		return FALSE;
 	}else{
 		$email = $result->fetch_assoc();
-		echo "The email matching this code is " . $email['email'];
+		//echo "The email matching this code is " . $email['email'];
 		$mainDB->close();
-		return TRUE;	//should change back to $email return 
+		return $email;	//should change back to $email return 
 	}
 	
 }
