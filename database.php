@@ -35,7 +35,6 @@ function storeCode(&$code, &$email){
 	}
 	$mainDB->close();
 	return TRUE;
-
 }
 //Checks that a code is in the table that stores codes and that that code has been submitted within 15minutes of generation
 function checkCode(&$code){
@@ -70,9 +69,7 @@ function checkCode(&$code){
 		$mainDB->close();
 		return TRUE;	//should change back to $email return 
 	}
-	
 }
-
 //Checks that an email is in the table that stores all students in the class, returns false if no student
 function checkEmail(&$email){
 	$mainDB = new mysqli($GLOBALS["server"],$GLOBALS["user"],$GLOBALS["password"],$GLOBALS["database"]);
@@ -85,7 +82,6 @@ function checkEmail(&$email){
 
 	return "checkEmail reads $email";
 }
-
 //returns list of Teammate emails based on another email
 function getTeammates(&$email){
 	$mainDB = new mysqli($GLOBALS["server"],$GLOBALS["user"],$GLOBALS["password"],$GLOBALS["database"]);
@@ -132,7 +128,34 @@ function getTeammates(&$email){
 	}
 	return $results;
 }
+//returns Name of person associated with email
+function getName(&$email){
+	$mainDB = new mysqli($GLOBALS["server"],$GLOBALS["user"],$GLOBALS["password"],$GLOBALS["database"]);
 
+	if ($mainDB->connect_error){
+		echo "Error with checkCode: " . $mainDB->connect_error . "\n";
+		$mainDB->close();
+		return FALSE;
+	}
+	//find the team associated with this email
+	$getName = $mainDB->prepare("SELECT Name FROM Students WHERE Email = ?");
+	$getName->bind_param("s", $email);
+	if (!$getName->execute()){
+		echo "Something went wrong with getting name";
+		$mainDB->close();
+		return FALSE;
+	}
+	$getName->store_result();
+	if ($getName->num_rows==0){
+		//this student is not part of a Team or isn't in the class
+		$mainDB->close();
+		return FALSE;
+	}else{
+		$getName->bind_result($name);
+		$getName->fetch();
+		return $name;
+	}
+}
 //Storing Form Data
 function storeFormData(&$email, &$peer, &$team, &$role, &$lead, &$par, &$prof, &$qual){	
 	$mainDB = new mysqli($GLOBALS["server"],$GLOBALS["user"],$GLOBALS["password"],$GLOBALS["database"]);
@@ -181,7 +204,6 @@ function storeFormData(&$email, &$peer, &$team, &$role, &$lead, &$par, &$prof, &
 	$mainDB->close();
 	return TRUE;
 }
-
 //returns list of the score for each form category (with structure: [Role, Leadership, Participation, Professionalism, Quality])
 function getFormData(&$email, &$peer, &$team){
 	$mainDB = new mysqli($GLOBALS["server"],$GLOBALS["user"],$GLOBALS["password"],$GLOBALS["database"]);
