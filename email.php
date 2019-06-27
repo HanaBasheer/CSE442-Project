@@ -21,21 +21,12 @@
 include"database.php";
 include "emailFuncs.php";
 
-#$email = $_POST["address"]; //takes the email given to the server via HTTP POST request
-
-/*
-$random_code = mt_rand(100000, 9999999999);
-$range = array_merge(range('A', 'Z'),range('a', 'z'));
-$index = array_rand($range, 1);
-$random_code = $random_code . $range[$index];
-*/
-
 $random_code = generateCode();
 
 if(!empty($_POST["address"])) {
-  $email = $_POST["address"];
+  $email = $_POST["address"]; //takes the email given to the server via HTTP POST request
   
-  storeAndEmailCode($random_code, $email);
+  storeAndEmailCode($random_code, $email); 
 }
 
 
