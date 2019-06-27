@@ -19,33 +19,23 @@
 <?php
 
 include"database.php";
+include "emailFuncs.php";
 
 #$email = $_POST["address"]; //takes the email given to the server via HTTP POST request
+
+/*
 $random_code = mt_rand(100000, 9999999999);
-$message = "Your confirmation code is $random_code <br><a href='https://www-student.cse.buffalo.edu/CSE442-542/2019-Summer/cse-442c/Testing-Zack/email.php'>Click Here to Enter Confirmation Code!</a>";
-$headers = "MIME-Version: 1.0" . "\r\n";
-$headers .= "Content-type:text/html;charset=UTF-8" . "\r\n";
+$range = array_merge(range('A', 'Z'),range('a', 'z'));
+$index = array_rand($range, 1);
+$random_code = $random_code . $range[$index];
+*/
 
-
+$random_code = generateCode();
 
 if(!empty($_POST["address"])) {
   $email = $_POST["address"];
-  $email = filter_var($email, FILTER_SANITIZE_EMAIL);
-
-  #$random_code = mt_rand(100000, 9999999999); // Example from https://www.expertsphp.com
-
-  // Validate e-mail
-  if (filter_var($email, FILTER_VALIDATE_EMAIL)) {
-    echo ("A confirmation code has been sent to $email<br>");
-	$return_bool = storeCode($random_code, $email);
-    }
-	else 
-	  {
-	  echo '<div style="font-size:1.25em;color:red;">email is not a valid email address, try again...<br> </div>';
-	  header("refresh:1; url=index.html");
-      }
-      #mail($email, "Confirmation", "Your Confirmation code is : $random_code \n hello");
-	  mail($email, "Confirmation", $message, $headers);
+  
+  storeAndEmailCode($random_code, $email);
 }
 
 
