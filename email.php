@@ -21,12 +21,24 @@
 include"database.php";
 
 #$email = $_POST["address"]; //takes the email given to the server via HTTP POST request
+$random_code = mt_rand(100000, 9999999999);
+$message = "Your confirmation code is $random_code <br><a href='https://www-student.cse.buffalo.edu/CSE442-542/2019-Summer/cse-442c/Testing-Zack/email.php'>Click Here to Enter Confirmation Code!</a>";
+$headers = "MIME-Version: 1.0" . "\r\n";
+$headers .= "Content-type:text/html;charset=UTF-8" . "\r\n";
+
+
 
 if(!empty($_POST["address"])) {
   $email = $_POST["address"];
   $email = filter_var($email, FILTER_SANITIZE_EMAIL);
+  
+  if (checkEmail($email) == FALSE){
+	  
+	  header("refresh:0; url=invalidEmail.html");
+  }
+	  
 
-  $random_code = mt_rand(100000, 9999999999); // Example from https://www.expertsphp.com
+  #$random_code = mt_rand(100000, 9999999999); // Example from https://www.expertsphp.com
 
   // Validate e-mail
   if (filter_var($email, FILTER_VALIDATE_EMAIL)) {
@@ -38,11 +50,8 @@ if(!empty($_POST["address"])) {
 	  echo '<div style="font-size:1.25em;color:red;">email is not a valid email address, try again...<br> </div>';
 	  header("refresh:1; url=index.html");
       }
-	  
-	  if (checkEmail($email) == 0){
-		header("refresh:1; url=invalidEmail.php");
-	}
-    mail($email, "Confirmation", "Your Confirmation code is : $random_code");
+      #mail($email, "Confirmation", "Your Confirmation code is : $random_code \n hello");
+	  mail($email, "Confirmation", $message, $headers);
 }
 
 
@@ -58,7 +67,7 @@ if(!empty($_POST["address"])) {
   </div>
 
   <div class="enter-code">
-    <form action ="checkCode.php" method = "post"> 
+    <form action ="actionBasedOnCode.php" method = "post"> 
 
     Enter Code: <input type="text" name="code"><br>
     <input type = "submit" value = "Submit">
