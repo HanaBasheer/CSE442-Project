@@ -3,9 +3,12 @@
 
 function generateCode(){
 	$random_code = mt_rand(100000, 9999999999);
-	$range = array_merge(range('A', 'Z'),range('a', 'z'));
-	$index = array_rand($range, 1);
-	$random_code = $random_code . $range[$index];
+	/*source for randletter generation: https://maymay.net/blog/2004/12/19/generating-random-letters-in-php/
+	*/
+	$range = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"; 
+	$index = rand(0,51);
+    $random_code = $random_code . $range[$index];
+	
 	return $random_code;
 }
 
