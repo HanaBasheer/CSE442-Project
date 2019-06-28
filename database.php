@@ -83,7 +83,7 @@ function checkEmail(&$email){
 	return "checkEmail reads $email";
 }
 //returns list of Teammate emails based on another email
-function getTeammates(&$email){
+function getTeammates(&$email, &$class){
 	$mainDB = new mysqli($GLOBALS["server"],$GLOBALS["user"],$GLOBALS["password"],$GLOBALS["database"]);
 
 	if ($mainDB->connect_error){
@@ -92,8 +92,8 @@ function getTeammates(&$email){
 		return FALSE;
 	}
 	//find the team associated with this email
-	$getTeam = $mainDB->prepare("SELECT Team FROM Students WHERE Email = ?");
-	$getTeam->bind_param("s", $email);
+	$getTeam = $mainDB->prepare("SELECT Team FROM Students WHERE Email = ? AND Class = ?");
+	$getTeam->bind_param("ss", $email, $class);
 	if (!$getTeam->execute()){
 		echo "Something went wrong with getting team name";
 		$mainDB->close();
