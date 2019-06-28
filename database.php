@@ -157,7 +157,7 @@ function getName(&$email){
 	}
 }
 //Storing Form Data
-function storeFormData(&$email, &$peer, &$team, &$role, &$lead, &$par, &$prof, &$qual){	
+function storeFormData(&$email, &$peer, &$class, &$team, &$role, &$lead, &$par, &$prof, &$qual){
 	$mainDB = new mysqli($GLOBALS["server"],$GLOBALS["user"],$GLOBALS["password"],$GLOBALS["database"]);
 
 	if ($mainDB->connect_error){
@@ -166,7 +166,7 @@ function storeFormData(&$email, &$peer, &$team, &$role, &$lead, &$par, &$prof, &
 		return FALSE;
 	}
 	//check if there is already form data, if there is then update
-	$check = $mainDB->prepare("SELECT * FROM Forms WHERE Owner = ? AND Peer = ? AND Team = ?");
+	$check = $mainDB->prepare("SELECT * FROM Forms WHERE Owner = ? AND Peer = ? AND Class = ? AND Team = ?");
 	$check->bind_param("sss", $email, $peer, $team);
 
 	if (!$check->execute()){
@@ -178,8 +178,8 @@ function storeFormData(&$email, &$peer, &$team, &$role, &$lead, &$par, &$prof, &
 	$check->store_result();
 	//if something was found then update that row and return true
 	if ($check->num_rows != 0){
-		$update = $mainDB->prepare("UPDATE Forms SET Role = ?, Leadership = ?, Participation = ?, Professionalism = ?, Quality = ? WHERE Owner = ? AND Peer = ? AND Team = ?");
-		$update->bind_param("iiiiisss", $role, $lead, $par, $prof, $qual, $email, $peer, $team);
+		$update = $mainDB->prepare("UPDATE Forms SET Role = ?, Leadership = ?, Participation = ?, Professionalism = ?, Quality = ? WHERE Owner = ? AND Peer = ? AND Class = ? AND Team = ?");
+		$update->bind_param("iiiiissss", $role, $lead, $par, $prof, $qual, $email, $peer, $class, $team);
 		if (!$update->execute()){
 			echo "Something went wrong with updating form data";
 			$mainDB->close();
@@ -192,14 +192,16 @@ function storeFormData(&$email, &$peer, &$team, &$role, &$lead, &$par, &$prof, &
 	$check->close();
 
 	//otherwise just store the new data
-	$store = $mainDB->prepare("INSERT INTO Forms (Owner, Peer, Team, Role, Leadership, Participation, Professionalism, Quality) VALUES (?, ?, ?, ?, ?, ?, ?, ?)");
-	$store->bind_param("sssiiiii", $email, $peer, $team, $role, $lead, $par, $prof, $qual);
+	$store = $mainDB->prepare("INSERT INTO Forms (Owner, Peer, Class, Team, Role, Leadership, Participation, Professionalism, Quality) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)");
+	$store->bind_param("ssssiiiii", $email, $peer, $class, $team, $role, $lead, $par, $prof, $qual);
 
 	if (!$store->execute()){
 		echo "Something went wrong with storing form data";
 		$mainDB->close();
 		return FALSE;
 	}
+
+	//then add the data to the normalized table
 
 	$mainDB->close();
 	return TRUE;
