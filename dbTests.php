@@ -9,12 +9,14 @@ $falsecode = 4321;
 storeCode($testcode, $testemail);
 checkCode($testcode);
 checkCode($falsecode);
-
+*/
 //storeForm and getForm tests
 
 $testemail = "orionpal@buffalo.edu";
+$testclass = "cse442";
 $testpeer = "hanab@buffalo.edu";
 $testteam = "c";
+/*
 $trole = 3;
 $tlead = 3;
 $tpar = 3;
@@ -28,14 +30,16 @@ $tprof = 2;
 $tqual = 1;
 storeFormData($testemail, $testpeer, $testteam, $trole, $tlead, $tpar, $tprof, $tqual);
 
-$fdata = getFormData($testemail, $testpeer, $testteam);
+*/
+$fdata = getFormData($testemail, $testclass, $testpeer, $testteam);
 foreach ($fdata as $val){
 	echo "$val <br>";
-}*/
+}
 
 //getTeammates tests
 $temail = "orionpal@buffalo.edu";
-$MYMATES = getTeammates($temail);
+$tclass = "cse442";
+$MYMATES = getTeammates($temail, $tclass);
 foreach ($MYMATES as $mate){
 	echo "$mate";
 	$name = getName($mate);

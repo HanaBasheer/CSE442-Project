@@ -205,7 +205,7 @@ function storeFormData(&$email, &$peer, &$team, &$role, &$lead, &$par, &$prof, &
 	return TRUE;
 }
 //returns list of the score for each form category (with structure: [Role, Leadership, Participation, Professionalism, Quality])
-function getFormData(&$email, &$peer, &$team){
+function getFormData(&$email, &$class, &$peer, &$team){
 	$mainDB = new mysqli($GLOBALS["server"],$GLOBALS["user"],$GLOBALS["password"],$GLOBALS["database"]);
 
 	if ($mainDB->connect_error){
@@ -213,8 +213,8 @@ function getFormData(&$email, &$peer, &$team){
 		$mainDB->close();
 		return FALSE;
 	}
-	$get = $mainDB->prepare("SELECT * FROM Forms WHERE Owner = ? AND Peer = ? AND Team = ?");
-	$get->bind_param("sss", $email, $peer, $team);
+	$get = $mainDB->prepare("SELECT * FROM Forms WHERE Owner = ? AND Class = ? AND Peer = ? AND Team = ?");
+	$get->bind_param("ssss", $email, $class, $peer, $team);
 
 	if (!$get->execute()){
 		echo "Something went wrong with getting form data";
@@ -228,7 +228,7 @@ function getFormData(&$email, &$peer, &$team){
 		$mainDB->close();
 		return FALSE;
 	}else{
-		$get->bind_result($o, $p, $t, $c1, $c2, $c3, $c4, $c5);
+		$get->bind_result($o, $c, $p, $t, $c1, $c2, $c3, $c4, $c5);
 		$get->fetch();
 		//echo "The results for $email and $peer of team $team are $c1  $c2  $c3  $c4  $c5";
 		$mainDB->close();
