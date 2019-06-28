@@ -1,13 +1,13 @@
-<?php
-include 'database.php';
-$email = 'ztperini@buffalo.edu';
-$peers = getTeammates($email);
-
-?>
 <html>
 
 <head>
+<<<<<<< HEAD
   <link rel="stylesheet" href="styles/evalForm.css">
+
+  <link href="https://fonts.googleapis.com/css?family=Noto+Serif+SC&display=swap" rel="stylesheet">
+=======
+  <link rel="stylesheet" href="evalForm.css">
+>>>>>>> evalForm
 
   <script type="text/javascript">
     function submitSuccessMsg() {
@@ -19,10 +19,10 @@ $peers = getTeammates($email);
 <body>
   
 
-  <form action='storeEvalFormData.php' onsubmit="JavaScript:submitSuccessMsg()" method='post'> 
+  <form action='evalForm.php' onsubmit="JavaScript:submitSuccessMsg()" method='post'> 
   <h2>Peer Evaluation Form</h2>
 
-  <p>Select your teammate: <input type="radio" name="teammates" value="t1"> <?php echo getName($peers[0]); ?> <input type="radio" name="teammates" value="t2"> <?php echo getName($peers[1]); ?> </p>
+  <p>Select your teammate: <input type="radio" name="teammates" value="t1"> Teammate 1 <input type="radio" name="teammates" value="t2"> Teammate 2 </p>
   
 	
 
@@ -179,7 +179,6 @@ $peers = getTeammates($email);
 	</form>
 	
 	
-  
 
 </body>
 
