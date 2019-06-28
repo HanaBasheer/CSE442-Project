@@ -113,8 +113,8 @@ function getTeammates(&$email, &$class){
 	$getTeam->close();
 
 	//get teammates emails associated with previously found team
-	$getMates = $mainDB->prepare("SELECT Email FROM Students WHERE Team = ? and Email != ?");
-	$getMates->bind_param("ss", $team, $email);
+	$getMates = $mainDB->prepare("SELECT Email FROM Students WHERE Team = ? and Class = ?");
+	$getMates->bind_param("ss", $team, $class);
 	if (!$getMates->execute()){
 		echo "Something went wrong with checking form data";
 		$mainDB->close();
