@@ -186,6 +186,7 @@ function storeFormData(&$email, &$peer, &$class, &$team, &$role, &$lead, &$par, 
 			return FALSE;		
 		}
 		$mainDB->close();
+		NormalizeData($email, $class, $team);
 		return TRUE;
 	}
 	$check->free_result();
@@ -204,6 +205,78 @@ function storeFormData(&$email, &$peer, &$class, &$team, &$role, &$lead, &$par, 
 	//then add the data to the normalized table
 
 	$mainDB->close();
+	return TRUE;
+}
+//Storing NormForm Data
+function storeNormData(&$email, &$peer, &$class, &$team, &$role, &$lead, &$par, &$prof, &$qual){
+	$mainDB = new mysqli($GLOBALS["server"],$GLOBALS["user"],$GLOBALS["password"],$GLOBALS["database"]);
+
+	if ($mainDB->connect_error){
+		echo "Error with checkCode: " . $mainDB->connect_error . "\n";
+		$mainDB->close();
+		return FALSE;
+	}
+	//check if there is already form data, if there is then update
+	$check = $mainDB->prepare("SELECT * FROM Forms WHERE Owner = ? AND Peer = ? AND Class = ? AND Team = ?");
+	$check->bind_param("sss", $email, $peer, $team);
+
+	if (!$check->execute()){
+		echo "Something went wrong with checking form data";
+		$mainDB->close();
+		return FALSE;
+	}
+
+	$check->store_result();
+	//if something was found then update that row and return true
+	if ($check->num_rows != 0){
+		$update = $mainDB->prepare("UPDATE Forms SET Role = ?, Leadership = ?, Participation = ?, Professionalism = ?, Quality = ? WHERE Owner = ? AND Peer = ? AND Class = ? AND Team = ?");
+		$update->bind_param("iiiiissss", $role, $lead, $par, $prof, $qual, $email, $peer, $class, $team);
+		if (!$update->execute()){
+			echo "Something went wrong with updating form data";
+			$mainDB->close();
+			return FALSE;		
+		}
+		$mainDB->close();
+		NormalizeData($email, $class, $team);
+		return TRUE;
+	}
+	$check->free_result();
+	$check->close();
+
+	//otherwise just store the new data
+	$store = $mainDB->prepare("INSERT INTO Forms (Owner, Peer, Class, Team, Role, Leadership, Participation, Professionalism, Quality) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)");
+	$store->bind_param("ssssiiiii", $email, $peer, $class, $team, $role, $lead, $par, $prof, $qual);
+
+	if (!$store->execute()){
+		echo "Something went wrong with storing form data";
+		$mainDB->close();
+		return FALSE;
+	}
+
+	//then add the data to the normalized table
+
+	$mainDB->close();
+	return TRUE;
+}
+//Store Normalized form data
+function NormalizeData(&$email, &$class, &$team){
+	$totalPoints = 0;
+	//get Teammates for this email
+	$teammates = getTeammates($email, $class);
+	//get total points
+	foreach ($teammates as $mate) {
+		//If there is some value for this teammate, add to the totalpoints
+		if ($form = getFormData($email, $class, $mate, $team)){
+
+		}
+	}
+	//store each form data as the values/totalPoints
+	foreach ($teammates as $mate) {
+		//If there is some value for this teammate, add to the totalpoints
+		if ($form = getFormData($email, $class, $mate, $team)){
+			storeNormData();
+		}
+	}
 	return TRUE;
 }
 //returns list of the score for each form category (with structure: [Role, Leadership, Participation, Professionalism, Quality])
