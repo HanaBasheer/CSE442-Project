@@ -82,6 +82,30 @@ function checkEmail(&$email){
 
 	return "checkEmail reads $email";
 }
+//returns list of classes based on passed email
+function getClasses(&$email){
+	$mainDB = new mysqli($GLOBALS["server"],$GLOBALS["user"],$GLOBALS["password"],$GLOBALS["database"]);
+	if ($mainDB->connect_error){
+		echo "Error with checkCode: " . $mainDB->connect_error . "\n";
+		$mainDB->close();
+		return FALSE;
+	}
+	//get classes associated with previously email
+	$getClass = $mainDB->prepare("SELECT Class FROM Students WHERE Email = ?");
+	$getClass->bind_param("s", $email);
+	if (!$getClass->execute()){
+		echo "Something went wrong with checking form data";
+		$mainDB->close();
+		return FALSE;
+	}
+	$getClass->store_result();
+	$getClass->bind_result($id);
+	$results = array();
+	while ($getClass->fetch()){
+		array_push($results, $id);
+	}
+	return $results;
+}
 //returns list of Teammate emails based on another email
 function getTeammates(&$email, &$class){
 	$mainDB = new mysqli($GLOBALS["server"],$GLOBALS["user"],$GLOBALS["password"],$GLOBALS["database"]);
