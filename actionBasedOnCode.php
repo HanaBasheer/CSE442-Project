@@ -16,7 +16,7 @@ $code=preg_replace('/\s+/', '', $code);
 #echo $return_function;
 
 
-if(checkCode($code) == 0) {
+if(checkCode($code) == FALSE) {
    header("refresh:0; url=invalidCode.html");
 }
 
