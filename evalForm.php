@@ -1,6 +1,12 @@
 <?php
+session_start();
+$code = $_SESSION['confCode'];
 include 'database.php';
-$email = 'ztperini@buffalo.edu';
+#$email = 'ztperini@buffalo.edu';
+
+echo "<script type='text/javascript'>alert('$code');</script>";
+$email = checkCode($code);
+echo "<script type='text/javascript'>alert('$email');</script>";
 $peers = getTeammates($email);
 
 ?>
