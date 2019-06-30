@@ -3,24 +3,17 @@ session_start();
 $code = $_SESSION['confCode'];
 include 'database.php';
 #$email = 'ztperini@buffalo.edu';
-echo "<script type='text/javascript'>alert('$code');</script>";
+#echo "<script type='text/javascript'>alert('Confirmation code is : $code');</script>";
 $email = checkCode($code);
-echo "<script type='text/javascript'>alert('$email');</script>";
+if ($email == FALSE){
+	header("refresh:0; url=invalidCode.html");
+}
+#echo "<script type='text/javascript'>alert('User email address is: $email');</script>";
 $class = getClasses($email);
-#echo "<script type='text/javascript'>alert('First class is $class[0]');</script>";
-#echo "<script type='text/javascript'>alert('Second class is $class[1]');</script>";
-$var = $class[1];
-#echo "<script type='text/javascript'>alert('The first class is $var');</script>";
-$peers = getTeammates($email, $var);
+$countVar = count($class);
+#echo "<script type='text/javascript'>alert('Number of classes is $countVar');</script>";
 
-#echo "<script type='text/javascript'>alert('teammate 1 is $peers[0]');</script>";
-#echo "<script type='text/javascript'>alert('teammate 2 is $peers[1]');</script>";
-#echo "<script type='text/javascript'>alert('teammate 3 is $peers[2]');</script>";
-
-#$email = 'ztperini@buffalo.edu';
-
-
-
+$_SESSION['emailAddress'] = $email;
 
 ?>
 <html>
@@ -33,13 +26,43 @@ $peers = getTeammates($email, $var);
       alert("Your form has been submitted successfully.")
     }
   </script>
-
+  
 </head>
 <body>
-  
-
-  <form action='storeEvalFormData.php' onsubmit="JavaScript:submitSuccessMsg()" method='post'> 
   <h2>Peer Evaluation Form</h2>
+  
+  <select id = 'classChoice' name="classChoice" onchange="window.location='evalForm.php?id='+this.value+'&pos='+this.selectedIndex;">
+        <option selected="selected">Choose Class</option>
+        <?php
+        
+        // Iterating through the array of classes 
+        foreach($class as $item){
+        ?>
+        <option value="<?php echo $item; ?>"><?php echo strtoupper($item); ?></option>
+        <?php
+        }
+        ?>
+    </select>
+	
+	<?php
+    if(isset($_GET['id']))
+    {
+        $CC=$_GET['id'];
+        #echo $CC;
+		$_SESSION['classChoice'] = $CC;
+    ?>
+    <script>
+        var myselect = document.getElementById("classChoice");
+        myselect.options.selectedIndex = <?php echo $_GET["pos"]; ?>
+		
+		<?php $peers = getTeammates($email, $CC); ?>
+		
+    </script>
+    <?php
+    }
+    ?>
+  <form action='storeEvalFormData.php' onsubmit="JavaScript:submitSuccessMsg()" method='post'> 
+  
 
   <p>Select your teammate: <input type="radio" name="teammates" value="t1"> <?php echo getName($peers[0]); ?> <input type="radio" name="teammates" value="t2"> <?php echo getName($peers[1]); ?> <input type="radio" name="teammates" value="t3"> <?php echo getName($peers[2]); ?></p>
   
