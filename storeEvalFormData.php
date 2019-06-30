@@ -36,8 +36,8 @@ if(isset($_POST['r5'])) {
 $email = "ztperini@buffalo.edu"; //testing sake, don't know how to pass this
 	
 
-$team = "b"; //just for testing,no method to get team name yet
-
+#$team = "b"; //just for testing,no method to get team name yet
+$team = getTeamName($email, $class);
 $peers = getTeammates($email);
 
 /*

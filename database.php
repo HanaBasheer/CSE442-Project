@@ -130,6 +130,36 @@ function getClasses(&$email){
 	}
 	return $results;
 }
+
+function getTeamName(&$email, &$class){
+	$mainDB = new mysqli($GLOBALS["server"],$GLOBALS["user"],$GLOBALS["password"],$GLOBALS["database"]);
+
+	if ($mainDB->connect_error){
+		echo "Error with checkCode: " . $mainDB->connect_error . "\n";
+		$mainDB->close();
+		return FALSE;
+	}
+	
+	$getTeam = $mainDB->prepare("SELECT Team FROM Students WHERE Email = ? AND Class = ?");
+	$getTeam->bind_param("ss", $email, $class);
+	if (!$getTeam->execute()){
+		echo "Something went wrong with getting team name";
+		$mainDB->close();
+		return FALSE;
+	}
+	
+	$getTeam->store_result();
+	if ($getTeam->num_rows==0){
+		//this student is not part of a Team or isn't in the class
+		$mainDB->close();
+		return FALSE;
+	}else{
+		$getTeam->bind_result($team);
+		$getTeam->fetch();
+		return $team;
+	}
+	
+}
 //returns list of Teammate emails based on another email
 function getTeammates(&$email, &$class){
 	$mainDB = new mysqli($GLOBALS["server"],$GLOBALS["user"],$GLOBALS["password"],$GLOBALS["database"]);
