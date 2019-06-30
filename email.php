@@ -31,6 +31,12 @@ $headers .= "Content-type:text/html;charset=UTF-8" . "\r\n";
 if(!empty($_POST["address"])) {
   $email = $_POST["address"];
   $email = filter_var($email, FILTER_SANITIZE_EMAIL);
+  
+  if (checkEmail($email) == FALSE){
+	  
+	  header("refresh:0; url=invalidEmail.html");
+  }
+	  
 
   #$random_code = mt_rand(100000, 9999999999); // Example from https://www.expertsphp.com
 

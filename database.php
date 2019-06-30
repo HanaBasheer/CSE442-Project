@@ -72,15 +72,39 @@ function checkCode(&$code){
 }
 //Checks that an email is in the table that stores all students in the class, returns false if no student
 function checkEmail(&$email){
+	
 	$mainDB = new mysqli($GLOBALS["server"],$GLOBALS["user"],$GLOBALS["password"],$GLOBALS["database"]);
 	if ($mainDB->connect_error){
 		echo "Error with checkingEmail: " . $mainDB->connect_error . "\n";
 		$mainDB->close();
 		return FALSE;
 	}
-	$mainDB->close();
+	
+	
+	//find the team associated with this email
+	$getEmail = $mainDB->prepare("SELECT Email FROM Students WHERE Email = ?");
+	$getEmail->bind_param("s", $email);
+	if (!$getEmail->execute()){
+		echo "Something went wrong with getting name";
+		$mainDB->close();
+		return FALSE;
+	}
+	$getEmail->store_result();
+	if ($getEmail->num_rows==0){
+		//this student is not part of a Team or isn't in the class
+		$mainDB->close();
+		return FALSE;
+	}else{
+		#$getName->bind_result($name);
+		#$getName->fetch();
+		return TRUE;
+	}
+	
+	
+	
+	#$mainDB->close();
 
-	return "checkEmail reads $email";
+	#return "checkEmail reads $email";
 }
 //returns list of classes based on passed email
 function getClasses(&$email){
