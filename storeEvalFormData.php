@@ -49,15 +49,14 @@ if(isset($_POST['r5'])) {
 #echo "<script type='text/javascript'>alert('Quality value is: $r5');</script>";
 #$email = "ztperini@buffalo.edu"; //testing sake, don't know how to pass this
 	
-
-$team = "b"; //just for testing,no method to get team name yet
-#$class = 'cse442';
 #echo "<script type='text/javascript'>alert('Class Choice is: $class');</script>";
 
 $peers = getTeammates($email, $class);
 
 #echo "<script type='text/javascript'>alert('teammate 1 is $peers[0]');</script>";
 #echo "<script type='text/javascript'>alert('teammate 2 is $peers[1]');</script>";
+
+$team = getTeamName($email, $class);
 
 /*
 foreach ($peers as $peer) {
