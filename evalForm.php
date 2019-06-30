@@ -1,7 +1,17 @@
 <?php
 include 'database.php';
 $email = 'ztperini@buffalo.edu';
-$peers = getTeammates($email);
+$class = getClasses($email);
+echo "<script type='text/javascript'>alert('First class is $class[0]');</script>";
+echo "<script type='text/javascript'>alert('Second class is $class[1]');</script>";
+$var = $class[1];
+#echo "<script type='text/javascript'>alert('The first class is $var');</script>";
+$peers = getTeammates($email, $var);
+
+#echo "<script type='text/javascript'>alert('teammate 1 is $peers[0]');</script>";
+#echo "<script type='text/javascript'>alert('teammate 2 is $peers[1]');</script>";
+#echo "<script type='text/javascript'>alert('teammate 3 is $peers[2]');</script>";
+
 
 ?>
 <html>
@@ -22,7 +32,7 @@ $peers = getTeammates($email);
   <form action='storeEvalFormData.php' onsubmit="JavaScript:submitSuccessMsg()" method='post'> 
   <h2>Peer Evaluation Form</h2>
 
-  <p>Select your teammate: <input type="radio" name="teammates" value="t1"> <?php echo getName($peers[0]); ?> <input type="radio" name="teammates" value="t2"> <?php echo getName($peers[1]); ?> </p>
+  <p>Select your teammate: <input type="radio" name="teammates" value="t1"> <?php echo getName($peers[0]); ?> <input type="radio" name="teammates" value="t2"> <?php echo getName($peers[1]); ?> <input type="radio" name="teammates" value="t3"> <?php echo getName($peers[2]); ?></p>
   
 	
 
