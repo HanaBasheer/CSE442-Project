@@ -1,9 +1,14 @@
 <?php
+session_start();
+$code = $_SESSION['confCode'];
 include 'database.php';
-$email = 'ztperini@buffalo.edu';
+#$email = 'ztperini@buffalo.edu';
+echo "<script type='text/javascript'>alert('$code');</script>";
+$email = checkCode($code);
+echo "<script type='text/javascript'>alert('$email');</script>";
 $class = getClasses($email);
-echo "<script type='text/javascript'>alert('First class is $class[0]');</script>";
-echo "<script type='text/javascript'>alert('Second class is $class[1]');</script>";
+#echo "<script type='text/javascript'>alert('First class is $class[0]');</script>";
+#echo "<script type='text/javascript'>alert('Second class is $class[1]');</script>";
 $var = $class[1];
 #echo "<script type='text/javascript'>alert('The first class is $var');</script>";
 $peers = getTeammates($email, $var);
@@ -11,6 +16,10 @@ $peers = getTeammates($email, $var);
 #echo "<script type='text/javascript'>alert('teammate 1 is $peers[0]');</script>";
 #echo "<script type='text/javascript'>alert('teammate 2 is $peers[1]');</script>";
 #echo "<script type='text/javascript'>alert('teammate 3 is $peers[2]');</script>";
+
+#$email = 'ztperini@buffalo.edu';
+
+
 
 
 ?>
