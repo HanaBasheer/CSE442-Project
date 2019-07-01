@@ -20,11 +20,101 @@ $_SESSION['emailAddress'] = $email;
 
 <head>
   <link rel="stylesheet" href="styles/evalForm.css">
-
   <script type="text/javascript">
     function submitSuccessMsg() {
       alert("Your form has been submitted successfully.")
     }
+	function fillFormData(arr){
+		//alert('in fill form data function!');
+		//alert('teammate selected is ' + element.value);
+		//alert(arr.join("\n")); //arr works
+		//console.log(arr.join("\n"));
+		var element = document.getElementById('teammates');
+		var role = arr[0];
+		var leadership = arr[1];
+		var participation = arr[2];
+		var professionalism = arr[3];
+		var quality = arr[4];
+				
+		switch(+role) {
+			case 0:
+				document.getElementById("r1-zero").checked = true;
+				break;
+			case 1:
+				document.getElementById("r1-one").checked = true;
+				break;
+			case 2:
+				document.getElementById("r1-two").checked = true;
+				break;
+			case 3:
+				document.getElementById("r1-three").checked = true;
+				break;				
+		}
+		
+		switch(+leadership) {
+			case 0:
+				document.getElementById("r2-zero").checked = true;
+				break;
+			case 1:
+				document.getElementById("r2-one").checked = true;
+				break;
+			case 2:
+				document.getElementById("r2-two").checked = true;
+				break;
+			case 3:
+				document.getElementById("r2-three").checked = true;
+				break;				
+		}
+		
+		switch(+participation) {
+			case 0:
+				document.getElementById("r3-zero").checked = true;
+				break;
+			case 1:
+				document.getElementById("r3-one").checked = true;
+				break;
+			case 2:
+				document.getElementById("r3-two").checked = true;
+				break;
+			case 3:
+				document.getElementById("r3-three").checked = true;
+				break;				
+		}
+		
+		switch(+professionalism) {
+			case 0:
+				document.getElementById("r4-zero").checked = true;
+				break;
+			case 1:
+				document.getElementById("r4-one").checked = true;
+				break;
+			case 2:
+				document.getElementById("r4-two").checked = true;
+				break;
+			case 3:
+				document.getElementById("r4-three").checked = true;
+				break;				
+		}
+		
+		switch(+quality) {
+			case 0:
+				document.getElementById("r5-zero").checked = true;
+				break;
+			case 1:
+				document.getElementById("r5-one").checked = true;
+				break;
+			case 2:
+				document.getElementById("r5-two").checked = true;
+				break;
+			case 3:
+				document.getElementById("r5-three").checked = true;
+				break;				
+		}
+
+		
+		
+	}
+	
   </script>
   
 </head>
@@ -61,10 +151,78 @@ $_SESSION['emailAddress'] = $email;
     <?php
     }
     ?>
+	<?php
+	    $teamName = getTeamName($email, $CC);
+		#echo "<script type='text/javascript'>alert('team name is $teamName');</script>";
+		$countPeers = count($peers);
+		#echo "<script type='text/javascript'>alert(' Number in group is $countPeers');</script>";
+		#echo "<script type='text/javascript'>alert(' First peer is $peers[0]');</script>";
+		#echo "<script type='text/javascript'>alert(' Second peer is $peers[1]');</script>";
+		#echo "<script type='text/javascript'>alert(' Third peer is $peers[2]');</script>";
+		
+		for($i=0; $i<$countPeers; $i++) {
+			${"formData" . $i} = getFormData($email, $CC, $peers[$i], $teamName);
+			#echo "<script type='text/javascript'>alert('form $i retrieved');</script>";	
+		}
+		
+		#echo "<script type='text/javascript'> alert('".json_encode($formData0)."') </script>";
+		#echo "<script type='text/javascript'> alert('".json_encode($formData1)."') </script>";
+		#echo "<script type='text/javascript'> alert('".json_encode($formData2)."') </script>";
+		?>
+		<script> 
+		var peerNum = <?php echo $countPeers; ?>;
+		//alert(peerNum);
+		var i = 0;
+		var ArryFormGet = [];
+		ArryFormGet = Array(5).fill("");
+		while(i < peerNum){
+			if (i ==0){
+				ArryFormGet[0] = <?php echo '["' . implode('", "', $formData0) . '"]' ?>;
+			}
+			else if (i ==1){
+				ArryFormGet[1] = <?php echo '["' . implode('", "', $formData1) . '"]' ?>;
+			}
+			else if (i ==2){
+				ArryFormGet[2] = <?php echo '["' . implode('", "', $formData2) . '"]' ?>;
+			}
+			else if (i ==3){
+				ArryFormGet[3] = <?php echo '["' . implode('", "', $formData3) . '"]' ?>;
+			}
+			else if (i ==4){
+				ArryFormGet[4] = <?php echo '["' . implode('", "', $formData3) . '"]' ?>;
+			}
+			i++
+		}
+			/*
+		var arr0 = <?php echo '["' . implode('", "', $formData0) . '"]' ?>;
+		var arr1 = <?php echo '["' . implode('", "', $formData1) . '"]' ?>;
+		var arr2 = <?php echo '["' . implode('", "', $formData2) . '"]' ?>;
+		*/
+		</script>
+
+		<?php
+		//or however many are created.
+		/*
+		echo "<script type='text/javascript'>alert('First peer is $peers[0]');</script>";
+		$formData = getFormData($email,$CC, $peers[0], $teamName) ;
+		echo "<script type='text/javascript'>alert('role value is $formData[0]');</script>";
+		echo "<script type='text/javascript'>alert('leadership value is $formData[1]');</script>";
+		echo "<script type='text/javascript'>alert('participation value is $formData[2]');</script>";
+		echo "<script type='text/javascript'>alert('professionalism value is $formData[3]');</script>";
+		echo "<script type='text/javascript'>alert('quality value is $formData[4]');</script>";
+		*/
+		
+		?>
+	
   <form action='storeEvalFormData.php' onsubmit="JavaScript:submitSuccessMsg()" method='post'> 
   
 
-  <p>Select your teammate: <input type="radio" name="teammates" value="t1"> <?php echo getName($peers[0]); ?> <input type="radio" name="teammates" value="t2"> <?php echo getName($peers[1]); ?> <input type="radio" name="teammates" value="t3"> <?php echo getName($peers[2]); ?></p>
+  <p>Select your teammate: 
+  <input type="radio" name="teammates" id = "teammates" value="t1" onclick="Javascript:fillFormData(ArryFormGet[0])" > <?php echo getName($peers[0]); ?> 
+  
+  <input type="radio" name="teammates" id = "teammates" value="t2" onclick ="Javascript:fillFormData(ArryFormGet[1])" > <?php echo getName($peers[1]); ?> 
+  
+  <input type="radio" name="teammates" id = "teammates" value="t3" onclick ="Javascript:fillFormData(ArryFormGet[2])" > <?php echo getName($peers[2]); ?></p>
   
 	
 
