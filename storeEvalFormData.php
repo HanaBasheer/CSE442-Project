@@ -70,7 +70,11 @@ if ($teammates == "t1"){
 }
 else if ($teammates == "t2"){$tm = $peers[1];}
 
-else {$tm = $peers[2];}
+else if ($teammates == "t3"){$tm = $peers[2];}
+else if ($teammates == "t4"){$tm = $peers[3];}
+
+
+else {$tm = $peers[4];}
 
 if ($tm == NULL){
 	echo "<script type='text/javascript'>alert('No teammate selected. Returning to evaluation form');</script>";

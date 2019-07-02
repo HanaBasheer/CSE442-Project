@@ -225,7 +225,14 @@ $_SESSION['emailAddress'] = $email;
   
   <input type="radio" name="teammates" id = "teammates" value="t2" onclick ="Javascript:fillFormData(ArryFormGet[1])" > <?php echo getName($peers[1]); ?> 
   
-  <input type="radio" name="teammates" id = "teammates" value="t3" onclick ="Javascript:fillFormData(ArryFormGet[2])" > <?php echo getName($peers[2]); ?></p>
+  <input type="radio" name="teammates" id = "teammates" value="t3" onclick ="Javascript:fillFormData(ArryFormGet[2])" > <?php echo getName($peers[2]); ?>
+  
+  <input type="radio" name="teammates" id = "teammates" value="t4" onclick ="Javascript:fillFormData(ArryFormGet[3])" > <?php echo getName($peers[3]); ?>
+  
+  <input type="radio" name="teammates" id = "teammates" value="t5" onclick ="Javascript:fillFormData(ArryFormGet[4])" > <?php echo getName($peers[4]); ?>
+  
+  
+  </p>
   
 	
 
