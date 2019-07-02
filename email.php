@@ -2,7 +2,7 @@
 <html>
 
 <head>
-  <link rel="stylesheet" href="css/emailStyle.css">
+  <link rel="stylesheet" href="styles/email.css">
   <link href="https://fonts.googleapis.com/css?family=Noto+Serif+SC&display=swap" rel="stylesheet">
 </head>
 
@@ -48,7 +48,7 @@ if(!empty($_POST["address"])) {
   <div class="enter-code">
     <form action ="actionBasedOnCode.php" method = "post"> 
 
-    Enter Code: <input type="text" name="code"><br>
+    Enter Code: <input type="text" name="code">
     <input type = "submit" value = "Submit">
     </form>
 

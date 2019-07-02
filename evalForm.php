@@ -20,8 +20,11 @@ $_SESSION['emailAddress'] = $email;
 
 <head>
   <link rel="stylesheet" href="styles/evalForm.css">
-  
-  
+
+	<link href="https://fonts.googleapis.com/css?family=Noto+Serif+SC&display=swap" rel="stylesheet">
+
+</head>
+
   <script type="text/javascript">
     function submitSuccessMsg() {
       alert("Your form has been submitted successfully.")
@@ -37,7 +40,7 @@ $_SESSION['emailAddress'] = $email;
 		var participation = arr[2];
 		var professionalism = arr[3];
 		var quality = arr[4];
-				
+
 		switch(+role) {
 			case 0:
 				document.getElementById("r1-zero").checked = true;
@@ -50,9 +53,10 @@ $_SESSION['emailAddress'] = $email;
 				break;
 			case 3:
 				document.getElementById("r1-three").checked = true;
-				break;				
+
+				break;
 		}
-		
+
 		switch(+leadership) {
 			case 0:
 				document.getElementById("r2-zero").checked = true;
@@ -65,9 +69,10 @@ $_SESSION['emailAddress'] = $email;
 				break;
 			case 3:
 				document.getElementById("r2-three").checked = true;
-				break;				
+
+				break;
 		}
-		
+
 		switch(+participation) {
 			case 0:
 				document.getElementById("r3-zero").checked = true;
@@ -80,9 +85,10 @@ $_SESSION['emailAddress'] = $email;
 				break;
 			case 3:
 				document.getElementById("r3-three").checked = true;
-				break;				
+
+				break;
 		}
-		
+
 		switch(+professionalism) {
 			case 0:
 				document.getElementById("r4-zero").checked = true;
@@ -95,9 +101,10 @@ $_SESSION['emailAddress'] = $email;
 				break;
 			case 3:
 				document.getElementById("r4-three").checked = true;
-				break;				
+
+				break;
 		}
-		
+
 		switch(+quality) {
 			case 0:
 				document.getElementById("r5-zero").checked = true;
@@ -110,25 +117,27 @@ $_SESSION['emailAddress'] = $email;
 				break;
 			case 3:
 				document.getElementById("r5-three").checked = true;
-				break;				
+
+				break;
 		}
 
-		
-		
+
+
 	}
-	
+
   </script>
-  
+
 
 </head>
 <body>
   <h2>Peer Evaluation Form</h2>
-  
+
   <select id = 'classChoice' name="classChoice" onchange="window.location='evalForm.php?id='+this.value+'&pos='+this.selectedIndex;" required>
         <option selected="selected">Choose Class</option>
         <?php
-        
-        // Iterating through the array of classes 
+
+        // Iterating through the array of classes
+
         foreach($class as $item){
         ?>
         <option value="<?php echo $item; ?>"><?php echo strtoupper($item); ?></option>
@@ -136,7 +145,7 @@ $_SESSION['emailAddress'] = $email;
         }
         ?>
     </select>
-	
+
 	<?php
     if(isset($_GET['id']))
     {
@@ -147,9 +156,10 @@ $_SESSION['emailAddress'] = $email;
     <script>
         var myselect = document.getElementById("classChoice");
         myselect.options.selectedIndex = <?php echo $_GET["pos"]; ?>
-		
+
+
 		<?php $peers = getTeammates($email, $CC); ?>
-		
+
     </script>
     <?php
     }
@@ -162,17 +172,19 @@ $_SESSION['emailAddress'] = $email;
 		#echo "<script type='text/javascript'>alert(' First peer is $peers[0]');</script>";
 		#echo "<script type='text/javascript'>alert(' Second peer is $peers[1]');</script>";
 		#echo "<script type='text/javascript'>alert(' Third peer is $peers[2]');</script>";
-		
+
 		for($i=0; $i<$countPeers; $i++) {
 			${"formData" . $i} = getFormData($email, $CC, $peers[$i], $teamName);
-			#echo "<script type='text/javascript'>alert('form $i retrieved');</script>";	
+			#echo "<script type='text/javascript'>alert('form $i retrieved');</script>";
 		}
-		
+
 		#echo "<script type='text/javascript'> alert('".json_encode($formData0)."') </script>";
 		#echo "<script type='text/javascript'> alert('".json_encode($formData1)."') </script>";
 		#echo "<script type='text/javascript'> alert('".json_encode($formData2)."') </script>";
 		?>
-		<script> 
+
+		<script>
+
 		var peerNum = <?php echo $countPeers; ?>;
 		//alert(peerNum);
 		var i = 0;
@@ -214,6 +226,7 @@ $_SESSION['emailAddress'] = $email;
 		echo "<script type='text/javascript'>alert('professionalism value is $formData[3]');</script>";
 		echo "<script type='text/javascript'>alert('quality value is $formData[4]');</script>";
 		*/
+
 		
 		?>
 	
@@ -387,9 +400,6 @@ $_SESSION['emailAddress'] = $email;
   <br>
     <input type='submit' name='submit' value='Submit' />
 	</form>
-	
-	
-  
 
 </body>
 
