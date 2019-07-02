@@ -19,18 +19,11 @@ body {
   right: 160px;
 }
 
-form {
+.input-email {
   text-align: center;
-  margin: auto;
+  color: #ffffff;
 }
 
-.email {
-  height: 30px;
-  width: 350px;
-  margin-left: 50px;
+a {
+  color: #ffffff;
 }
-
-.submit-btn {
-  height: 500px;
-}
-
