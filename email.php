@@ -2,7 +2,7 @@
 <html>
 
 <head>
-  <link rel="stylesheet" href="css/emailStyle.css">
+  <link rel="stylesheet" href="styles/email.css">
   <link href="https://fonts.googleapis.com/css?family=Noto+Serif+SC&display=swap" rel="stylesheet">
 </head>
 
@@ -19,26 +19,18 @@
 <?php
 
 include"database.php";
+include "emailFuncs.php";
 
-#$email = $_POST["address"]; //takes the email given to the server via HTTP POST request
+$random_code = generateCode();
 
 if(!empty($_POST["address"])) {
-  $email = $_POST["address"];
-  $email = filter_var($email, FILTER_SANITIZE_EMAIL);
-
-  $random_code = mt_rand(100000, 9999999999); // Example from https://www.expertsphp.com
-
-  // Validate e-mail
-  if (filter_var($email, FILTER_VALIDATE_EMAIL)) {
-    echo ("A confirmation code has been sent to $email<br>");
-	$return_bool = storeCode($random_code, $email);
-    }
-	else 
-	  {
-	  echo '<div style="font-size:1.25em;color:red;">email is not a valid email address, try again...<br> </div>';
-	  header("refresh:1; url=index.html");
-      }
-    mail($email, "Confirmation", "Your Confirmation code is : $random_code");
+  $email = $_POST["address"]; //takes the email given to the server via HTTP POST request
+  
+  if (checkEmail($email) == FALSE){
+	  
+	  header("refresh:0; url=invalidEmail.html");
+  }
+  storeAndEmailCode($random_code, $email); 
 }
 
 
@@ -54,9 +46,9 @@ if(!empty($_POST["address"])) {
   </div>
 
   <div class="enter-code">
-    <form action ="checkCode.php" method = "post"> 
+    <form action ="actionBasedOnCode.php" method = "post"> 
 
-    Enter Code: <input type="text" name="code"><br>
+    Enter Code: <input type="text" name="code">
     <input type = "submit" value = "Submit">
     </form>
 

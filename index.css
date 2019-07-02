@@ -1,0 +1,29 @@
+body {
+  background-color: #005bbb;
+  margin: 0;
+  color: #ffffff;
+  font-size: medium;
+  font-weight: 200;
+  font-family: 'Noto Serif SC', serif;
+}
+
+.top-strip {
+  background-color: #ffffff;
+  height: 100px;
+  margin-bottom: 25%;
+}
+
+.ub-logo {
+  height: 100px;
+  position: relative;
+  right: 160px;
+}
+
+.input-email {
+  text-align: center;
+  color: #ffffff;
+}
+
+a {
+  color: #ffffff;
+}
